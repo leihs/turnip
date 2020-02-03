@@ -21,11 +21,23 @@ module Turnip
       end
 
       if matches.length > 1
-        msg = ['Ambiguous step definitions'].concat(matches.map(&:trace)).join("\r\n")
-        raise Turnip::Ambiguous, msg
+        if match_1 = matches.filter { |m| not m.block.source_location.first.match(/shared/) }.first
+          send(match_1.method_name, *(match_1.params + extra_args))
+        elsif
+          match_2 = 
+            matches
+            .filter { |m| m.block.source_location.first.match(/shared/) }
+            .sort { |m| m.block.source_location.first.split('/').count }
+            .reverse
+            .first
+          send(match_2.method_name, *(match_2.params + extra_args))
+        else
+          msg = ['Ambiguous step definitions'].concat(matches.map(&:trace)).join("\r\n")
+          raise Turnip::Ambiguous, msg
+        end
+      else
+        send(matches.first.method_name, *(matches.first.params + extra_args))
       end
-
-      send(matches.first.method_name, *(matches.first.params + extra_args))
     end
   end
 end
