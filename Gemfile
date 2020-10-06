@@ -1,4 +1,5 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in turnip.gemspec
 gemspec
+
+gem "pry-byebug", platforms: :mri

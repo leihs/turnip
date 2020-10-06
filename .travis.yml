@@ -8,12 +8,12 @@ branches:
     - master
 
 rvm:
-  - 2.2
-  - 2.3.6
-  - 2.4.3
-  - 2.5.0
-  - jruby-19mode
+  - 2.5.8
+  - 2.6.6
+  - 2.7.1
+  - jruby
 
 gemfile:
-  - gemfiles/Gemfile-rspec-3.6.x
   - gemfiles/Gemfile-rspec-3.7.x
+  - gemfiles/Gemfile-rspec-3.8.x
+  - gemfiles/Gemfile-rspec-3.9.x

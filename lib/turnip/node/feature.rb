@@ -1,8 +1,7 @@
 require 'turnip/node/base'
 require 'turnip/node/tag'
-require 'turnip/node/scenario'
-require 'turnip/node/scenario_outline'
-require 'turnip/node/background'
+require 'turnip/node/scenario_group_definition'
+require 'turnip/node/rule'
 
 module Turnip
   module Node
@@ -20,53 +19,34 @@ module Turnip
     #       children: [], # Array of Background, Scenario and Scenario Outline
     #     }
     #
-    class Feature < Base
+    class Feature < ScenarioGroupDefinition
       include HasTags
-
-      def name
-        @raw[:name]
-      end
 
       def language
         @raw[:language]
       end
 
-      def keyword
-        @raw[:keyword]
-      end
-
-      def description
-        @raw[:description]
-      end
-
       def children
-        @children ||= @raw[:children].map do |c|
-          case c[:type]
-          when :Background
-            Background.new(c)
-          when :Scenario
-            Scenario.new(c)
-          when :ScenarioOutline
-            ScenarioOutline.new(c)
+        @children ||= @raw[:children].map do |child|
+          unless child[:background].nil?
+            next Background.new(child[:background])
+          end
+
+          unless child[:scenario].nil?
+            klass = child.dig(:scenario, :examples).nil? ? Scenario : ScenarioOutline
+            next klass.new(child[:scenario])
+          end
+
+          unless child[:rule].nil?
+            next Rule.new(child[:rule])
           end
         end.compact
       end
 
-      def backgrounds
-        @backgrounds ||= children.select do |c|
-          c.is_a?(Background)
+      def rules
+        @rules ||= children.select do |c|
+          c.is_a?(Rule)
         end
-      end
-
-      def scenarios
-        @scenarios ||= children.map do |c|
-          case c
-          when Scenario
-            c
-          when ScenarioOutline
-            c.to_scenarios
-          end
-        end.flatten.compact
       end
 
       def metadata_hash
