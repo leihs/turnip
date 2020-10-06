@@ -21,12 +21,12 @@ module Turnip
       end
 
       if matches.length > 1
-        if match_1 = matches.filter { |m| not m.block.source_location.first.match(/shared/) }.first
+        if match_1 = matches.select { |m| not m.block.source_location.first.match(/shared/) }.first
           send(match_1.method_name, *(match_1.params + extra_args))
         elsif
           match_2 = 
             matches
-            .filter { |m| m.block.source_location.first.match(/shared/) }
+            .select { |m| m.block.source_location.first.match(/shared/) }
             .sort { |m| m.block.source_location.first.split('/').count }
             .reverse
             .first
