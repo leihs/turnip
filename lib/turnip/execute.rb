@@ -27,7 +27,11 @@ module Turnip
           match_2 = 
             matches
             .select { |m| m.block.source_location.first.match(/shared/) }
-            .sort { |m| m.block.source_location.first.split('/').count }
+            .sort do |m1, m2|
+              folder_level_1 = m1.block.source_location.first.split('/').count
+              folder_level_2 = m2.block.source_location.first.split('/').count
+              folder_level_1 <=> folder_level_2
+            end
             .reverse
             .first
           send(match_2.method_name, *(match_2.params + extra_args))
