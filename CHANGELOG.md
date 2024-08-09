@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [4.4.1] - 2024-08-09
+
+### Fixed
+
+- Fix tags on scenario outline [[GH-252](https://github.com/jnicklas/turnip/pull/252)]
+
 ## [4.4.0] - 2022-11-04
 
 ### Added
