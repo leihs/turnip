@@ -1,3 +1,7 @@
+# About this fork
+
+This fork includes enhancements to the step definition execution logic, specifically addressing scenarios where multiple step definitions match a given step. It prioritizes non-shared step definitions and, if necessary, selects the most deeply nested shared step definition. The convention for the shared steps is to place them in the `shared` folders.
+
 # Turnip
 
 [![Join the chat at https://gitter.im/jnicklas/turnip](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jnicklas/turnip?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
